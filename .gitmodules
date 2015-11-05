@@ -1,0 +1,3 @@
+[submodule "roles/softwareraid"]
+	path = roles/softwareraid
+	url = https://github.com/jacoelho/ansible-softwareraid.git
