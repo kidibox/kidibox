@@ -16,7 +16,7 @@ mount --rbind /run run  # (assuming /run exists on the system)
 
 # Enable OVH mirror
 sed -i '/mirrors.ovh.net/s/^#//g' etc/pacman.d/mirrorlist
-sed -i '/.be\//s/^#//g' etc/pacman.d/mirrorlist
+# sed -i '/.be\//s/^#//g' etc/pacman.d/mirrorlist
 
 # Disable CheckSpace in chroot
 sed -i "s/^\s*CheckSpace.*/#CheckSpace/" etc/pacman.conf
@@ -27,7 +27,7 @@ chroot `pwd` /bin/bash <<EOL
 pacman --noconfirm -Sy haveged && haveged
 pacman-key --init
 pacman-key --populate archlinux
-pacman -Suy --noconfirm --needed base gptfdisk
+pacman -S --noconfirm --needed gptfdisk mdadm  sed
 pacman -Scc --noconfirm
 EOL
 
@@ -35,15 +35,22 @@ EOL
 mv etc/pacman.conf.bak etc/pacman.conf
 
 cp ../install-arch.sh .
+cp -R ../files .
+
+
+if [ -f ~/.ssh/authorized_keys ]; then
+  mkdir root/.ssh
+  cp ~/.ssh/authorized_keys root/.ssh/
+fi
+
 chroot `pwd` /bin/bash ./install-arch.sh
 
-
-
-
-# REQUIREMENTS
+# TODO
 # create gpt partitions with raid:
 # - /dev/sd[ab]1 1M GPT
 # - /dev/sd[ab]2 20g /root
-# - /dev/sd[ab]3 100% -> to be used by LVM, setup with ansible
-# - /dev/sd[ab]4 4G swap
+# - /dev/sd[ab]3 100% -> to be used by LVM, setup done post install by ansible
+# - /dev/sd[ab]4 4G swap / leave 100m at the end
 #
+# - loggly
+# - /var/lib/docker on lvm?
