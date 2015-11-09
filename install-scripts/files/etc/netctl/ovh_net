@@ -1,6 +1,6 @@
 # IPv4 Setup
 Description='A basic static ethernet connection'
-Interface=enp0s25
+Interface=eno1
 Connection=ethernet
 IP=static
 Address=('178.32.223.46/24')
@@ -12,4 +12,4 @@ TimeoutCarrier=300
 # IPv6 Setup
 IP6=static
 Address6=('2001:41D0:8:E22e::/64')
-IPCustom=('-6 route add 2001:41D0:8:E2ff:ff:ff:ff:ff dev enp0s25' '-6 route add default via 2001:41D0:8:E2ff:ff:ff:ff:ff')
+IPCustom=('-6 route add 2001:41D0:8:E2ff:ff:ff:ff:ff dev eno1' '-6 route add default via 2001:41D0:8:E2ff:ff:ff:ff:ff')

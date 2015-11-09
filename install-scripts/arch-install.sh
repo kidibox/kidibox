@@ -71,10 +71,10 @@ mkfs.ext4 /dev/md0
 mkswap /dev/md2
 swapon /dev/md2
 
-mount "/dev/md0" "/mnt"
-
-# pacstrap /mnt base base-devel openssh grub gptfdisk haveged vim
 newroot=/mnt
+
+mount "/dev/md0" "$newroot"
+
 mkdir -m 0755 -p "$newroot"/var/{cache/pacman/pkg,lib/pacman,log} "$newroot"/{dev,run,etc}
 mkdir -m 1777 -p "$newroot"/tmp
 mkdir -m 0555 -p "$newroot"/{sys,proc}
@@ -86,21 +86,21 @@ pacman -r "$newroot" --cachedir="$newroot/var/cache/pacman/pkg" -Sy base base-de
 cp -a /etc/pacman.d/gnupg "$newroot/etc/pacman.d/"
 cp -a /etc/pacman.d/mirrorlist "$newroot/etc/pacman.d/"
 
-genfstab -U -p /mnt >> /mnt/etc/fstab
-mdadm --examine --scan > /mnt/etc/mdadm.conf
+genfstab -U -p "$newroot" >> "$newroot/etc/fstab"
+mdadm --examine --scan > "$newroot/etc/mdadm.conf"
 
-sed -i 's/^HOOKS="\(.*block\)\s*\(filesystems.*\)"/HOOKS="\1 mdadm_udev \2"/' /mnt/etc/mkinitcpio.conf
-sed -i "s/^#Color/Color/" /mnt/etc/pacman.conf
-sed -i "s/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /mnt/etc/locale.gen
+sed -i 's/^HOOKS="\(.*block\)\s*\(filesystems.*\)"/HOOKS="\1 mdadm_udev \2"/' "$newroot/etc/mkinitcpio.conf"
+sed -i "s/^#Color/Color/" "$newroot/etc/pacman.conf"
+sed -i "s/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" "$newroot/etc/locale.gen"
 
 if [ -f ~/.ssh/authorized_keys ]; then
-  mkdir /mnt/root/.ssh
-  cp ~/.ssh/authorized_keys /mnt/root/.ssh/
+  mkdir "$newroot/root/.ssh"
+  cp ~/.ssh/authorized_keys "$newroot/root/.ssh/"
 fi
 
-cp -R files/* /mnt/
+cp -R files/* $newroot
 
-chroot $newroot /bin/bash <<EOL
+chroot "$newroot" /bin/bash <<EOL
 echo kidibox > /etc/hostname
 echo LANG=en_US.UTF-8 > /etc/locale.conf
 ln -s /usr/share/zoneinfo/Europe/Brussels /etc/localtime
@@ -116,8 +116,8 @@ grub-install --target=i386-pc --recheck --debug /dev/sdb
 grub-mkconfig -o /boot/grub/grub.cfg
 
 systemctl enable sshd.service
-if [ -f /etc/netctl/ovh_net_enp0s25 ]; then
-  netctl enable ovh_net_enp0s25
+if [ -f /etc/netctl/ovh_net ]; then
+  netctl enable ovh_net
 fi
 EOL
 
