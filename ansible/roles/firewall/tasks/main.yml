@@ -1,0 +1,25 @@
+---
+
+- name: Install ufw
+  pacman: name=ufw state=latest
+  notify:
+    - Enable ufw service
+    - Start ufw service
+
+- name: Enable logging
+  ufw: log=yes logging=low
+
+- name: Set default policy
+  ufw: policy=deny
+
+- name: Set rules
+  ufw: rule={{ item.rule }} proto={{ item.proto }} port={{ item.port }}
+  with_items:
+    - { rule: "limit", proto: "tcp", port: 22 }
+    - { rule: "allow", proto: "tcp", port: 80 }
+    - { rule: "allow", proto: "tcp", port: 443 }
+  notify:
+    - Reload ufw
+
+- name: Enable ufw
+  ufw: state=enabled
