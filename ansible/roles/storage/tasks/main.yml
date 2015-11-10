@@ -1,0 +1,19 @@
+---
+
+- name: Install lvm2
+  pacman: name=lvm2 state=latest
+
+- name: Create volume group
+  lvg:  vg={{ volume_group_name }} pvs={{ volune_group_disk }}
+
+- name: Create logical volumes
+  lvol: vg={{ volume_group_name }} lv={{ item.name }} size={{ item.size }}
+  with_items: "{{ logical_volumes }}"
+
+- name: Partition logical volumes
+  filesystem: dev=/dev/{{ volume_group_name }}/{{ item.name }} fstype={{ item.type }}
+  with_items: "{{ filesystems }}"
+
+- name: Mount logical volumes
+  mount: state=mounted name={{ item.mountpoint }} src=/dev/{{ volume_group_name }}/{{ item.lv }} fstype={{ item.type }}
+  with_items: "{{ mountpoints }}"

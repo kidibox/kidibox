@@ -27,10 +27,7 @@ Vagrant.configure("2") do |config|
     ansible.extra_vars = {
       'ansible_become' => 'yes',
       'ansible_python_interpreter' => '/usr/bin/python2',
-      'lvm_vg_disk' => '/dev/sdb',
-      'lvm_logical_volumes_mountpoints' => [
-        { lv: 'home', type: 'ext4', mountpoint: '/home/data' }
-      ]
+      'volune_group_disk' => '/dev/sdb'
     }
   end
 end
