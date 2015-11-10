@@ -4,7 +4,7 @@
   pacman: name=ufw state=latest
   notify:
     - Enable ufw service
-    - Start ufw service
+    - Restart ufw service
 
 - name: Enable logging
   ufw: log=yes logging=low

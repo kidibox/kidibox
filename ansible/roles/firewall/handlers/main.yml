@@ -3,8 +3,8 @@
 - name: Enable ufw service
   service: name=ufw enabled=yes
 
-- name: Start ufw servie
-  service: name=ufw state=started
+- name: Restart ufw servie
+  service: name=ufw state=restarted
 
 - name: Reload ufw
   ufw: name=ufw state=reloaded
