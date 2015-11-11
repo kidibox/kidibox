@@ -2,6 +2,6 @@
 
 - hosts: all
   roles:
-    - upgrade
+    - update-cache
     - firewall
     - storage
