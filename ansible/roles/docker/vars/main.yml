@@ -1,0 +1,5 @@
+---
+
+docker_storage_fs: xfs
+docker_storage_data_dev: /dev/vg.data/docker.data
+docker_storage_metadata_dev: /dev/vg.data/docker.metadata

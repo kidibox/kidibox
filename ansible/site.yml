@@ -5,3 +5,4 @@
     - update-cache
     - firewall
     - storage
+    - docker
