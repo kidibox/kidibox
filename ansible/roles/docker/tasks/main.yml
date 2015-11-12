@@ -4,6 +4,7 @@
   pacman: name=docker state=latest
   notify:
     - Enable docker service
+    - Reload docker service
     - Restart docker service
 
 - name: Creates docker configuration directory
