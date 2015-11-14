@@ -7,6 +7,9 @@
     - Reload docker service
     - Restart docker service
 
+- name: Install docker-py
+  pacman: name=python2-docker-py state=latest
+
 - name: Creates docker configuration directory
   file:
     path: /etc/systemd/system/docker.service.d
