@@ -26,3 +26,6 @@
   notify:
     - Reload docker service
     - Restart docker service
+
+- name: Execute handlers
+  meta: flush_handlers
