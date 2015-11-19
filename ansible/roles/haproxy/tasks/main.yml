@@ -1,0 +1,17 @@
+---
+
+- name: Start haproxy docker container
+  docker:
+    name: haproxy
+    image: kidibox/haproxy
+    state: reloaded
+    restart_policy: always
+    command: consul-template -config=/tmp/haproxy.hcl -consul consul:8500
+    links:
+      - consul
+    expose:
+      - 80
+      - 443
+    ports:
+      - "80:80"
+      - "443:443"
