@@ -1,0 +1,10 @@
+---
+
+- name: Create consul container
+  docker:
+    name: consul
+    image: gliderlabs/consul-server
+    command: -bootstrap
+    state: reloaded
+    restart_policy: always
+    net: services
