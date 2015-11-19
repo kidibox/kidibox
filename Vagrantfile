@@ -6,7 +6,9 @@ file_to_disk = File.join(VAGRANT_ROOT, '.vagrant', 'filename.vdi')
 
 Vagrant.configure("2") do |config|
   config.vm.box = 'terrywang/archlinux'
-  config.vm.network :private_network, ip: '192.168.111.222'
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 443, host: 8443
+  config.vm.network "forwarded_port", guest: 1963, host: 1936
 
   config.vm.provider 'virtualbox' do |vm|
     unless File.exist?(file_to_disk)
