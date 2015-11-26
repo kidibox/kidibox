@@ -4,7 +4,7 @@
   docker:
     name: consul
     image: gliderlabs/consul-server
-    command: -bootstrap
+    command: -bootstrap-expect 1
+    net: services
     state: reloaded
     restart_policy: always
-    net: services
