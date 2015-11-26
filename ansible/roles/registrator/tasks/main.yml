@@ -1,0 +1,12 @@
+---
+
+- name: Create registrator container
+  docker:
+    name: registrator
+    image: kidibox/registrator
+    command: -internal consul://consul:8500
+    state: reloaded
+    restart_policy: always
+    net: services
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock"
