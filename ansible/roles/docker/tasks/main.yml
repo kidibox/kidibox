@@ -34,4 +34,3 @@
   shell: "docker network ls | grep -q {{ item }} || docker network create {{ item }} || true"
   with_items:
     - services
-    - frontend
