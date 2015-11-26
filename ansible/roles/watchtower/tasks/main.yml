@@ -1,0 +1,11 @@
+---
+
+- name: Create watchtower container
+  docker:
+    name: watchtower
+    image: centurylink/watchtower
+    state: reloaded
+    restart_policy: always
+    net: services
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
