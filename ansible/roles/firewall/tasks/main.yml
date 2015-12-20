@@ -13,6 +13,9 @@
 - name: Set default policy
   ufw: policy=deny
 
+- name: Allow routed traffic
+  ufw: rule=allow name=routed
+
 - name: Set rules
   ufw: rule={{ item.rule }} proto={{ item.proto }} port={{ item.port }}
   with_items:
