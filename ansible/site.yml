@@ -3,6 +3,6 @@
 - hosts: all
   roles:
     - update-cache
-    - firewall
     - storage
     - docker
+    - watchtower

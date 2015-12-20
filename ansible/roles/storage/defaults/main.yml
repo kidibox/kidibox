@@ -10,15 +10,15 @@ volumes:
     type: xfs
     mount: /home
 
-  - name: docker.lib
-    size: 1%FREE
-    type: xfs
-    mount: /var/lib/docker
-
   - name: docker.metadata
     lv: docker.metadata
-    size: 1%FREE
+    size: 10G
 
   - name: docker.data
     lv: docker.data
+    size: 90G
+
+  - name: docker.lib
     size: 100%FREE
+    type: xfs
+    mount: /var/lib/docker

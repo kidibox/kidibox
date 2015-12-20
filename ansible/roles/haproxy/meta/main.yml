@@ -1,6 +1,0 @@
----
-
-dependencies:
-- { role: docker }
-- { role: consul }
-- { role: firewall }
