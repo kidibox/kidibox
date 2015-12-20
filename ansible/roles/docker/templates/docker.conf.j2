@@ -4,5 +4,6 @@ ExecStart=/usr/bin/docker daemon \
   -H fd:// \
   --exec-opt native.cgroupdriver=cgroupfs \
   --storage-opt dm.fs={{ docker_storage_fs }} \
+  --storage-opt dm.basesize={{ docker_stroage_basesize }} \
   --storage-opt dm.datadev={{ docker_storage_data_dev }} \
   --storage-opt dm.metadatadev={{ docker_storage_metadata_dev }}
