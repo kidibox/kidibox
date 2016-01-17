@@ -1,0 +1,38 @@
+---
+
+# - name: Create letsencrypt data only container
+#   command: >
+#     docker run -it
+#     --name letsencrypt-data
+#     --entrypoint /bin/echo
+#     quay.io/letsencrypt/letsencrypt
+#     "Data only container"
+
+- name: Create nginx container
+  docker:
+    name: nginx
+    image: arnaudrebts/nginx-letsencrypt-proxy
+    state: reloaded
+    restart_policy: always
+    volumes_from:
+      - letsencrypt-data
+    ports:
+      - "80:80"
+      - "443:443"
+
+- name: Create docker-gen container
+  docker:
+    name: docker-gen
+    image: jwilder/docker-gen
+    state: reloaded
+    restart_policy: always
+    volumes_from:
+      - nginx
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    command: >
+      --watch
+      -only-exposed
+      -notify-sighup nginx
+      /etc/nginx/conf.d/99-vhosts.conf.tmpl
+      /etc/nginx/conf.d/99-vhosts.conf

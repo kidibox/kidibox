@@ -1,0 +1,65 @@
+---
+
+- name: Create postgres data container
+  docker:
+    name: kidibox-postgres-data
+    image: postgres:latest
+    state: present
+    command: /bin/echo "Data only container"
+
+- name: Create postgres container
+  docker:
+    name: kidibox-postgres
+    image: postgres:latest
+    state: reloaded
+    restart_policy: always
+    env:
+      POSTGRES_USER: "{{ kidibox_user }}"
+      POSTGRES_PASSWORD: "{{ kidibox_password }}"
+    volumes_from:
+      - kidibox-postgres-data
+
+- name: Create transmission data container
+  docker:
+    name: kidibox-transmission-data
+    image: dperson/transmission
+    state: present
+    command: /bin/echo "Data only container"
+    env:
+      TRUSER: "{{ kidibox_user }}"
+      TRPASSWD: "{{ kidibox_password }}"
+
+- name: Create transmission container
+  docker:
+    name: kidibox-transmission
+    image: dperson/transmission
+    state: reloaded
+    restart_policy: always
+    volumes_from: kidibox-transmission-data
+    env:
+      TRUSER: "{{ kidibox_user }}"
+      TRPASSWD: "{{ kidibox_password }}"
+
+- name: Create kidibox-api container
+  docker:
+    name: kidibox-api
+    image: kidibox/kidibox-api
+    state: reloaded
+    restart_policy: always
+    env:
+      DATABASE_URL: "postgres://{{ kidibox_user }}:{{ kidibox_password }}@postgres:5432/kidibox"
+      TRANSMISSION_PORT: 9091
+      TRANSMISSION_USERNAME: "{{ kidibox_user }}"
+      TRANSMISSION_PASSWORD: "{{ kidibox_password }}"
+      VIRTUAL_HOST: "api.kidibox.net"
+      CERT_NAME: "kidibox.net"
+      PROXY_SCHEME: "https"
+      SSL_CERTIFICATE_KEY: /etc/letsencrypt/live/kidibox.net/privkey.pem
+      SSL_CERTIFICATE: /etc/letsencrypt/live/kidibox.net/fullchain.pem
+    links:
+      - kidibox-postgres:postgres
+      - kidibox-transmission:transmission
+    volumes_from:
+      - kidibox-transmission-data
+      - letsencrypt-data
+

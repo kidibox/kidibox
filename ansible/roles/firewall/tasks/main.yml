@@ -20,8 +20,6 @@
   ufw: rule={{ item.rule }} proto={{ item.proto }} port={{ item.port }}
   with_items:
     - { rule: "limit", proto: "tcp", port: 22 }
-    - { rule: "allow", proto: "tcp", port: 80 }
-    - { rule: "allow", proto: "tcp", port: 443 }
   notify:
     - Reload ufw
 
