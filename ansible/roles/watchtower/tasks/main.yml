@@ -6,5 +6,6 @@
     image: centurylink/watchtower
     state: reloaded
     restart_policy: always
+    command: --cleanup
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
