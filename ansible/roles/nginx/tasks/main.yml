@@ -36,3 +36,9 @@
       -notify-sighup nginx
       /etc/nginx/conf.d/99-vhosts.conf.tmpl
       /etc/nginx/conf.d/99-vhosts.conf
+
+- name: Setup auto renew job
+  cron:
+    name: letsencrypt-renew
+    special_time: weekly
+    job: /usr/bin/docker run -it --rm --name letsencrypt --volumes-from letsencrypt-data --volumes-from nginx quay.io/letsencrypt/letsencrypt renew && docker kill -s SIGHUP nginx
