@@ -52,10 +52,14 @@
     state: reloaded
     restart_policy: always
     env:
-      DATABASE_URL: "postgres://{{ kidibox_user }}:{{ kidibox_password }}@postgres:5432/kidibox"
       TRANSMISSION_PORT: 9091
       TRANSMISSION_USERNAME: "{{ kidibox_user }}"
       TRANSMISSION_PASSWORD: "{{ kidibox_password }}"
+      POSTGRES_HOST: "postgres"
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "{{ kidibox_user }}"
+      POSTGRES_PASSWORD: "{{ kidibox_password }}"
+      POSTGRES_DATABASE: "kidibox"
       VIRTUAL_HOST: "api.kidibox.net"
       CERT_NAME: "kidibox.net"
       PROXY_SCHEME: "https"
