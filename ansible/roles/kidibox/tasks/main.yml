@@ -36,9 +36,14 @@
     state: reloaded
     restart_policy: always
     volumes_from: kidibox-transmission-data
+    cap_add:
+      - NET_ADMIN
     env:
       TRUSER: "{{ kidibox_user }}"
       TRPASSWD: "{{ kidibox_password }}"
+    ports:
+      - "51413:51413/tcp"
+      - "51413:51413/udp"
 
 - name: Create kidibox-api container
   docker:
