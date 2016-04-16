@@ -72,3 +72,17 @@
       - kidibox-transmission-data
       - letsencrypt-data
 
+- name: Create kidibox-ui container
+  docker:
+    name: kidibox-ui
+    image: kidibox/kidibox-ui
+    state: reloaded
+    restart_policy: always
+    env:
+      VIRTUAL_HOST: "box.kidibox.net"
+      CERT_NAME: "kidibox.net"
+      PROXY_SCHEME: "https"
+      SSL_CERTIFICATE_KEY: /etc/letsencrypt/live/kidibox.net/privkey.pem
+      SSL_CERTIFICATE: /etc/letsencrypt/live/kidibox.net/fullchain.pem
+    volumes_from:
+      - letsencrypt-data
