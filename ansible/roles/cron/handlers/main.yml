@@ -1,0 +1,10 @@
+---
+
+- name: Enable cron service
+  service: name=cronie enabled=yes
+
+- name: Reload cron service
+  service: name=cronie state=reloaded
+
+- name: Restart cron servie
+  service: name=cronie state=restarted

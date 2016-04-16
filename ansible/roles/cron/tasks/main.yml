@@ -1,0 +1,11 @@
+---
+
+- name: Install cron
+  pacman: name=cronie state=latest
+  notify:
+    - Enable cron service
+    - Reload cron service
+    - Restart cron service
+
+- name: Execute handlers
+  meta: flush_handlers

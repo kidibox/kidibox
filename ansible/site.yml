@@ -5,6 +5,7 @@
     - update-cache
     - storage
     - docker
+    - cron
     - nginx
     - kidibox
     - watchtower
